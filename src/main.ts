@@ -26,7 +26,8 @@ async function start() {
   const config = new DocumentBuilder()
     .setTitle('Приложение Фильмотека.')
     .setDescription('Приложение для выбора фильма из совместных списков.')
-    .setVersion('1.0')
+    .addTag('Filmoteka')
+    .setVersion('1.0.0')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

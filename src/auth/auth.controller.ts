@@ -3,6 +3,7 @@ import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegistrationDto } from './dto/registration.dto';
+import { UserResponse } from './dto/userResponse.dto';
 
 @ApiTags('Авторизация')
 @Controller('auth')
@@ -10,7 +11,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @ApiOperation({ description: 'Авторизация', summary: 'вход в свой профиль' })
-  @ApiResponse({ status: 200, description: 'Успешный вход.', type: LoginDto })
+  @ApiResponse({ status: 200, description: 'Успешный вход.', type: UserResponse })
   @ApiResponse({ status: 401, description: 'Вход не удался.' })
   @ApiBody({ type: LoginDto, description: 'Модель для авторизации:' })
   @HttpCode(200)
@@ -23,7 +24,7 @@ export class AuthController {
   @ApiResponse({
     status: 201,
     description: 'Успешная регистрация.',
-    type: RegistrationDto,
+    type: UserResponse,
   })
   @ApiResponse({ status: 401, description: 'Регистрация не удалась.' })
   @ApiBody({ type: RegistrationDto, description: 'Модель для регистрации:' })
