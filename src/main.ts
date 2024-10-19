@@ -4,6 +4,9 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function start() {
+  // * Получение порта из .env
+  const PORT = process.env.PORT || 3000;
+
   //* Создание приложение
   const app = await NestFactory.create(AppModule);
 
@@ -33,6 +36,6 @@ async function start() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
 
-  await app.listen(3000, () => console.log('Сервер запущен.'));
+  await app.listen(PORT, () => console.log(`Сервер запущен на порту ${PORT}.`));
 }
 start();
