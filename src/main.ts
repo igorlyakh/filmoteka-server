@@ -1,6 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 
 async function start() {
@@ -15,6 +16,9 @@ async function start() {
 
   //* Включение cors
   app.enableCors();
+
+  // * Включение куки
+  app.use(cookieParser());
 
   //* Настройка валидации
   app.useGlobalPipes(
