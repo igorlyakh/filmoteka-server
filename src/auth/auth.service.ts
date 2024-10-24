@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
+import { Response } from 'express';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserService } from 'src/user/user.service';
 import { LoginDto } from './dto/login.dto';
@@ -17,7 +18,7 @@ export class AuthService {
     private readonly configService: ConfigService
   ) {}
 
-  async registration(dto: RegistrationDto) {
+  async registration(dto: RegistrationDto, res: Response) {
     const candidate = await this.userService.findUserByEmail(dto.email);
     if (candidate) {
       throw new ConflictException('Пользователь с таким email уже существует!');
@@ -29,7 +30,9 @@ export class AuthService {
       data: { ...dto, password: hashedPassword },
     });
 
-    const accessToken = await this.generateToken(user.id, user.email);
+    const { accessToken, refreshToken } = await this.generateToken(user.id, user.email);
+
+    res.cookie('refreshToken', refreshToken);
 
     return {
       id: user.id,
@@ -39,21 +42,31 @@ export class AuthService {
     };
   }
 
-  async login(dto: LoginDto) {
+  async login(dto: LoginDto, res: Response) {
     const user = await this.validateUser(dto.email, dto.password);
     if (user) {
+      const { accessToken, refreshToken } = await this.generateToken(user.id, user.email);
+      res.cookie('refreshToken', refreshToken);
       return {
-        accessToken: await this.generateToken(user.id, user.email),
+        accessToken,
       };
     }
   }
 
   private async generateToken(id: number, email: string) {
     const payload = { id, email };
-    return this.jwt.sign(payload, {
+
+    const accessToken = this.jwt.sign(payload, {
       secret: this.configService.getOrThrow('JWT_ACCESS_SECRET'),
       expiresIn: '1h',
     });
+
+    const refreshToken = this.jwt.sign(payload, {
+      secret: this.configService.getOrThrow('JWT_REFRESH_SECRET'),
+      expiresIn: '30d',
+    });
+
+    return { accessToken, refreshToken };
   }
 
   async validateUser(email: string, password: string): Promise<User> {

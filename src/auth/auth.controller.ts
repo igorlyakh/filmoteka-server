@@ -1,5 +1,6 @@
-import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, Response } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Response as ResponseType } from 'express';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegistrationDto } from './dto/registration.dto';
@@ -16,8 +17,8 @@ export class AuthController {
   @ApiBody({ type: LoginDto, description: 'Модель для авторизации:' })
   @HttpCode(200)
   @Post('login')
-  async login(@Body() dto: LoginDto) {
-    return this.authService.login(dto);
+  async login(@Body() dto: LoginDto, @Response({ passthrough: true }) res: ResponseType) {
+    return this.authService.login(dto, res);
   }
 
   @ApiOperation({ description: 'Регистрация', summary: 'регистрация профиля' })
@@ -30,7 +31,10 @@ export class AuthController {
   @ApiBody({ type: RegistrationDto, description: 'Модель для регистрации:' })
   @HttpCode(201)
   @Post('registration')
-  async registration(@Body() dto: RegistrationDto) {
-    return this.authService.registration(dto);
+  async registration(
+    @Body() dto: RegistrationDto,
+    @Response({ passthrough: true }) res: ResponseType
+  ) {
+    return this.authService.registration(dto, res);
   }
 }
