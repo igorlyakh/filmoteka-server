@@ -1,6 +1,13 @@
-import { Body, Controller, HttpCode, Post, Response } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, HttpCode, Post, Response, UseGuards } from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Response as ResponseType } from 'express';
+import { JwtGuard } from 'src/guards/jwt.guard';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegistrationDto } from './dto/registration.dto';
@@ -36,5 +43,19 @@ export class AuthController {
     @Response({ passthrough: true }) res: ResponseType
   ) {
     return this.authService.registration(dto, res);
+  }
+
+  @ApiOperation({
+    description: 'Выход из аккаунта',
+    summary: 'выход из аккаунта',
+  })
+  @ApiBearerAuth()
+  @ApiResponse({ status: 204, description: 'Успешный выход из аккаунта.' })
+  @ApiResponse({ status: 401, description: 'Пользователь не авторизован.' })
+  @UseGuards(JwtGuard)
+  @HttpCode(204)
+  @Post('logout')
+  async logout(@Response({ passthrough: true }) res: ResponseType) {
+    res.cookie('refreshToken', '');
   }
 }
