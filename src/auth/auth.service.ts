@@ -1,4 +1,5 @@
 import { ConflictException, HttpException, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
@@ -12,7 +13,8 @@ export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly prisma: PrismaService,
-    private readonly jwt: JwtService
+    private readonly jwt: JwtService,
+    private readonly configService: ConfigService
   ) {}
 
   async registration(dto: RegistrationDto) {
@@ -48,7 +50,10 @@ export class AuthService {
 
   private async generateToken(id: number, email: string) {
     const payload = { id, email };
-    return this.jwt.sign(payload);
+    return this.jwt.sign(payload, {
+      secret: this.configService.getOrThrow('JWT_SECRET'),
+      expiresIn: '1h',
+    });
   }
 
   async validateUser(email: string, password: string): Promise<User> {
