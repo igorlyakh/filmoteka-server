@@ -53,6 +53,12 @@ export class AuthService {
     }
   }
 
+  async refreshTokens(user: User, res: Response) {
+    const { accessToken, refreshToken } = await this.generateToken(user.id, user.email);
+    res.cookie('refreshToken', refreshToken);
+    return { accessToken };
+  }
+
   private async generateToken(id: number, email: string) {
     const payload = { id, email };
 
