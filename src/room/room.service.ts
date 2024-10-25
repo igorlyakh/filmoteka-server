@@ -14,6 +14,10 @@ export class RoomService {
           connect: { id },
         },
       },
+      include: {
+        users: true,
+        movies: true,
+      },
     });
 
     return room;

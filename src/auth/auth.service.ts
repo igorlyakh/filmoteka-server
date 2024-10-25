@@ -18,6 +18,8 @@ export class AuthService {
     private readonly configService: ConfigService
   ) {}
 
+  //! Регистрация
+
   async registration(dto: RegistrationDto, res: Response) {
     const candidate = await this.userService.findUserByEmail(dto.email);
     if (candidate) {
@@ -28,6 +30,7 @@ export class AuthService {
 
     const user = await this.prisma.user.create({
       data: { ...dto, password: hashedPassword },
+      include: { rooms: true, movie: true },
     });
 
     const { accessToken, refreshToken } = await this.generateToken(user.id, user.email);
@@ -42,6 +45,8 @@ export class AuthService {
     };
   }
 
+  //! Авторизация
+
   async login(dto: LoginDto, res: Response) {
     const user = await this.validateUser(dto.email, dto.password);
     if (user) {
@@ -53,11 +58,15 @@ export class AuthService {
     }
   }
 
+  //! Обновление токена
+
   async refreshTokens(user: User, res: Response) {
     const { accessToken, refreshToken } = await this.generateToken(user.id, user.email);
     res.cookie('refreshToken', refreshToken);
     return { accessToken };
   }
+
+  //! Создание токена
 
   private async generateToken(id: number, email: string) {
     const payload = { id, email };
@@ -74,6 +83,8 @@ export class AuthService {
 
     return { accessToken, refreshToken };
   }
+
+  //! Валидация пользователя
 
   async validateUser(email: string, password: string): Promise<User> {
     const user = await this.userService.findUserByEmail(email);
