@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -80,15 +81,16 @@ export class RoomController {
     const user = await this.userService.findUserByEmail(dto.email);
     const room = await this.roomService.findRoomById(roomId);
     if (!user) {
-      return {
-        message: 'Пользователя с таким email не существует.',
-      };
+      throw new BadRequestException('Пользователя с таким email не существует.');
     }
 
     if (!room) {
-      return {
-        message: 'Данная комната не найдена.',
-      };
+      throw new BadRequestException('Пользователя с таким email не существует.');
+    }
+
+    const checkUser = await this.roomService.isUserInRoom(roomId, user.email);
+    if (checkUser) {
+      throw new BadRequestException('Пользователь уже находится в данной комнате.');
     }
 
     return this.roomService.addUserToRoom(dto, roomId);

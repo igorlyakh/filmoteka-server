@@ -75,4 +75,23 @@ export class RoomService {
       },
     });
   }
+
+  async isUserInRoom(roomId: number, email: string) {
+    const user = await this.prisma.room.findFirst({
+      where: {
+        id: roomId,
+        users: {
+          some: {
+            email,
+          },
+        },
+      },
+    });
+
+    if (user) {
+      return true;
+    }
+
+    return false;
+  }
 }
