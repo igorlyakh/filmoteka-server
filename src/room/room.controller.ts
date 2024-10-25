@@ -1,4 +1,13 @@
-import { Body, Controller, Get, HttpCode, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -9,6 +18,8 @@ import {
 import { User as UserType } from '@prisma/client';
 import { User } from 'src/decorators/user.decorator';
 import { JwtAccessGuard } from 'src/guards/jwt-access.guard';
+import { UserService } from 'src/user/user.service';
+import { AddUserToRoomDto } from './dto/add-user-to-room.dto';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { RoomService } from './room.service';
 
@@ -16,7 +27,10 @@ import { RoomService } from './room.service';
 @UseGuards(JwtAccessGuard)
 @Controller('room')
 export class RoomController {
-  constructor(private readonly roomService: RoomService) {}
+  constructor(
+    private readonly roomService: RoomService,
+    private readonly userService: UserService
+  ) {}
 
   //! --------------------------- { Создание комнаты } ----------------------------------
 
@@ -57,5 +71,26 @@ export class RoomController {
     return {
       message: 'У пользователя ещё нет ни одной комнаты.',
     };
+  }
+
+  //! ----------------------------- { Добавление пользователя в комнату } -------------------------------
+
+  @Patch(':roomId')
+  async addUserToRoom(@Body() dto: AddUserToRoomDto, @Param('roomId') roomId: number) {
+    const user = await this.userService.findUserByEmail(dto.email);
+    const room = await this.roomService.findRoomById(roomId);
+    if (!user) {
+      return {
+        message: 'Пользователя с таким email не существует.',
+      };
+    }
+
+    if (!room) {
+      return {
+        message: 'Данная комната не найдена.',
+      };
+    }
+
+    return this.roomService.addUserToRoom(dto, roomId);
   }
 }
