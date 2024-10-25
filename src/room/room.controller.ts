@@ -13,6 +13,7 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiOperation,
+  ApiParam,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -76,6 +77,24 @@ export class RoomController {
 
   //! ----------------------------- { Добавление пользователя в комнату } -------------------------------
 
+  @ApiOperation({
+    description: 'Добавление пользователя в существующую комнату',
+    summary: 'добавление пользователя',
+  })
+  @ApiParam({
+    name: 'roomId',
+    description: 'id комнаты в которую будет добавлен пользователь',
+    example: 3,
+    required: true,
+  })
+  @ApiResponse({ status: 200, description: 'Пользователь успешно добавлен.' })
+  @ApiResponse({ status: 401, description: 'Пользователь не авторизован.' })
+  @ApiResponse({
+    status: 400,
+    description:
+      'Неверно переданные данные либо пользователь уже находится в данной комнате.',
+  })
+  @ApiBearerAuth()
   @Patch(':roomId')
   async addUserToRoom(@Body() dto: AddUserToRoomDto, @Param('roomId') roomId: number) {
     const user = await this.userService.findUserByEmail(dto.email);
