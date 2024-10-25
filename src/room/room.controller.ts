@@ -37,6 +37,16 @@ export class RoomController {
 
   //! --------------------------- { Получение комнат пользователя } ----------------------------------
 
+  @ApiOperation({
+    description: 'Получение всех комнат пользователя',
+    summary: 'получение комнат',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Успешное получение всех комнат.',
+  })
+  @ApiResponse({ status: 401, description: 'Пользователь не авторизован.' })
+  @ApiBearerAuth()
   @HttpCode(200)
   @Get()
   async getUserRooms(@User() user: UserType) {
