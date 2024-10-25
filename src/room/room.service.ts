@@ -22,4 +22,22 @@ export class RoomService {
 
     return room;
   }
+
+  async getUsersRoom(id: number) {
+    const rooms = await this.prisma.room.findMany({
+      where: {
+        users: {
+          some: {
+            id,
+          },
+        },
+      },
+      include: {
+        users: true,
+        movies: true,
+      },
+    });
+
+    return rooms;
+  }
 }

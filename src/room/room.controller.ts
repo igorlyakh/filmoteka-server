@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -33,5 +33,19 @@ export class RoomController {
   @Post()
   async createRoom(@Body() dto: CreateRoomDto, @User() user: UserType) {
     return this.roomService.createRoom(dto, user.id);
+  }
+
+  //! --------------------------- { Получение комнат пользователя } ----------------------------------
+
+  @HttpCode(200)
+  @Get()
+  async getUserRooms(@User() user: UserType) {
+    const rooms = await this.roomService.getUsersRoom(user.id);
+    if (rooms.length >= 1) {
+      return rooms;
+    }
+    return {
+      message: 'У пользователя ещё нет ни одной комнаты.',
+    };
   }
 }
