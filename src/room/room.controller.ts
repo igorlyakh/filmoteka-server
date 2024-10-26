@@ -134,7 +134,13 @@ export class RoomController {
 
   @HttpCode(200)
   @Patch('/kick/:roomId')
-  async kickUserFromRoom(@Param('roomId') roomId: number, @Body() dto: KickUserDto) {
+  async kickUserFromRoom(
+    @Param('roomId') roomId: number,
+    @Body() dto: KickUserDto,
+    @User() user: UserType
+  ) {
+    if (dto.id === user.id)
+      throw new BadRequestException('Невозможно исключить самого себя!');
     return this.roomService.kickUserFromRoom(roomId, dto);
   }
 }
