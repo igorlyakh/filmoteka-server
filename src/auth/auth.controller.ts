@@ -20,7 +20,7 @@ import { UserResponse } from './dto/userResponse.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  //! ------------------------ { Авторизация } ------------------------------------------
+  // ------------------------ { Авторизация } ------------------------------------------
 
   @ApiOperation({ description: 'Авторизация', summary: 'вход в свой профиль' })
   @ApiResponse({ status: 200, description: 'Успешный вход.', type: UserResponse })
@@ -32,7 +32,7 @@ export class AuthController {
     return this.authService.login(dto, res);
   }
 
-  //! --------------------------- { Регистрация } ---------------------------------------------
+  // --------------------------- { Регистрация } ---------------------------------------------
 
   @ApiOperation({ description: 'Регистрация', summary: 'регистрация профиля' })
   @ApiResponse({
@@ -51,7 +51,7 @@ export class AuthController {
     return this.authService.registration(dto, res);
   }
 
-  //!  ------------------------- { Обновление токенов } ---------------------------------
+  // --------------------------- { Обновление токенов } ---------------------------------
 
   @ApiOperation({
     description: 'Обновление токенов пользователя',
@@ -67,7 +67,7 @@ export class AuthController {
     return this.authService.refreshTokens(user, res);
   }
 
-  //! --------------------------- { Выход из аккаунта } -----------------------------------
+  // --------------------------- { Выход из аккаунта } -----------------------------------
 
   @ApiOperation({
     description: 'Выход из аккаунта',

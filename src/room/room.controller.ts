@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   Param,
@@ -34,7 +35,7 @@ export class RoomController {
     private readonly userService: UserService
   ) {}
 
-  //! --------------------------- { Создание комнаты } ----------------------------------
+  // --------------------------- { Создание комнаты } ----------------------------------
 
   @ApiOperation({ description: 'Создание новой комнаты', summary: 'создание комнаты' })
   @ApiResponse({ status: 201, description: 'Комната успешно создана.' })
@@ -51,7 +52,7 @@ export class RoomController {
     return this.roomService.createRoom(dto, user.id);
   }
 
-  //! --------------------------- { Получение комнат пользователя } ----------------------------------
+  // --------------------------- { Получение комнат пользователя } ----------------------------------
 
   @ApiOperation({
     description: 'Получение всех комнат пользователя',
@@ -75,7 +76,7 @@ export class RoomController {
     };
   }
 
-  //! ----------------------------- { Добавление пользователя в комнату } -------------------------------
+  // ----------------------------- { Добавление пользователя в комнату } -------------------------------
 
   @ApiOperation({
     description: 'Добавление пользователя в существующую комнату',
@@ -114,4 +115,10 @@ export class RoomController {
 
     return this.roomService.addUserToRoom(dto, roomId);
   }
+
+  // ---------------------------- { Удаление комнаты } --------------------------
+
+  @HttpCode(204)
+  @Delete()
+  async deleteRoomById(@Body() roomId: number) {}
 }

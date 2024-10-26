@@ -11,6 +11,8 @@ export class RoomService {
     private readonly userService: UserService
   ) {}
 
+  // ------------------------ { Создание комнаты } --------------------
+
   async createRoom(dto: CreateRoomDto, id: number) {
     const room = await this.prisma.room.create({
       data: {
@@ -27,6 +29,8 @@ export class RoomService {
 
     return room;
   }
+
+  // ------------------- { Получение комнат пользователя } -----------------
 
   async getUsersRoom(id: number) {
     const rooms = await this.prisma.room.findMany({
@@ -45,6 +49,8 @@ export class RoomService {
 
     return rooms;
   }
+
+  // ---------------------- { Добавление пользователя в комнату } -------------------
 
   async addUserToRoom(dto: AddUserToRoomDto, roomId: number) {
     const user = await this.userService.findUserByEmail(dto.email);
@@ -66,6 +72,8 @@ export class RoomService {
     return updatedRoom;
   }
 
+  // --------------------- { Поиск комнаты по id } ----------------------
+
   async findRoomById(id: number) {
     return this.prisma.room.findUnique({
       where: { id },
@@ -75,6 +83,8 @@ export class RoomService {
       },
     });
   }
+
+  // ---------------------- { Проверка нахождение пользователя в комнате } --------------------------
 
   async isUserInRoom(roomId: number, email: string) {
     const user = await this.prisma.room.findFirst({
