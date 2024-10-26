@@ -16,7 +16,10 @@ async function start() {
   app.setGlobalPrefix('api');
 
   //* Включение cors
-  app.enableCors();
+  app.enableCors({
+    origin: '*',
+    credentials: true,
+  });
 
   //* Включение куки
   app.use(cookieParser(COOKIE_SECRET));
