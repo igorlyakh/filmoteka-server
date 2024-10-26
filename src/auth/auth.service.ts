@@ -35,7 +35,11 @@ export class AuthService {
 
     const { accessToken, refreshToken } = await this.generateToken(user.id, user.email);
 
-    res.cookie('refreshToken', refreshToken);
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: false,
+      signed: true,
+    });
 
     return {
       id: user.id,
@@ -51,7 +55,11 @@ export class AuthService {
     const user = await this.validateUser(dto.email, dto.password);
     if (user) {
       const { accessToken, refreshToken } = await this.generateToken(user.id, user.email);
-      res.cookie('refreshToken', refreshToken);
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: false,
+        signed: true,
+      });
       return {
         accessToken,
       };
@@ -62,7 +70,11 @@ export class AuthService {
 
   async refreshTokens(user: User, res: Response) {
     const { accessToken, refreshToken } = await this.generateToken(user.id, user.email);
-    res.cookie('refreshToken', refreshToken);
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: false,
+      signed: true,
+    });
     return { accessToken };
   }
 

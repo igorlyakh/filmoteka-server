@@ -5,8 +5,9 @@ import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 
 async function start() {
-  //* Получение порта из .env
+  //* Получение переменных из .env
   const PORT = process.env.PORT || 3000;
+  const COOKIE_SECRET = process.env.COOKIE_SECRET || '';
 
   //* Создание приложение
   const app = await NestFactory.create(AppModule);
@@ -18,7 +19,7 @@ async function start() {
   app.enableCors();
 
   //* Включение куки
-  app.use(cookieParser());
+  app.use(cookieParser(COOKIE_SECRET));
 
   //* Настройка валидации
   app.useGlobalPipes(
