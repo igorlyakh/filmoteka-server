@@ -5,7 +5,7 @@ import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 
 async function start() {
-  // * Получение порта из .env
+  //* Получение порта из .env
   const PORT = process.env.PORT || 3000;
 
   //* Создание приложение
@@ -17,7 +17,7 @@ async function start() {
   //* Включение cors
   app.enableCors();
 
-  // * Включение куки
+  //* Включение куки
   app.use(cookieParser());
 
   //* Настройка валидации
@@ -29,7 +29,7 @@ async function start() {
     })
   );
 
-  // * Настройка Swagger
+  //* Настройка Swagger
   const config = new DocumentBuilder()
     .setTitle('Приложение Фильмотека.')
     .setDescription('Приложение для выбора фильма из совместных списков.')
