@@ -25,6 +25,7 @@ import { UserService } from 'src/user/user.service';
 import { AddUserToRoomDto } from './dto/add-user-to-room.dto';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { DeleteRoomDto } from './dto/delete-room.dto';
+import { KickUserDto } from './dto/kick-user.dto';
 import { RoomService } from './room.service';
 
 @ApiTags('Комнаты')
@@ -106,7 +107,7 @@ export class RoomController {
     }
 
     if (!room) {
-      throw new BadRequestException('Пользователя с таким email не существует.');
+      throw new BadRequestException('Такой комнаты не существует.');
     }
 
     const checkUser = await this.roomService.isUserInRoom(roomId, user.email);
@@ -127,5 +128,13 @@ export class RoomController {
       throw new BadRequestException('Комнаты с таким id не существует!');
     }
     return;
+  }
+
+  // --------------------------- { Удаление пользователя из комнаты } -----------------------------
+
+  @HttpCode(200)
+  @Patch('/kick/:roomId')
+  async kickUserFromRoom(@Param('roomId') roomId: number, @Body() dto: KickUserDto) {
+    return this.roomService.kickUserFromRoom(roomId, dto);
   }
 }

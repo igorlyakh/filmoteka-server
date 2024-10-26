@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserService } from 'src/user/user.service';
 import { AddUserToRoomDto } from './dto/add-user-to-room.dto';
 import { CreateRoomDto } from './dto/create-room.dto';
+import { KickUserDto } from './dto/kick-user.dto';
 
 @Injectable()
 export class RoomService {
@@ -111,6 +112,35 @@ export class RoomService {
     return await this.prisma.room.delete({
       where: {
         id: roomId,
+      },
+    });
+  }
+
+  // --------------------------- { Удаление пользователя из комнаты } -----------------------------
+
+  async kickUserFromRoom(roomId: number, dto: KickUserDto) {
+    const user = await this.userService.findUserById(dto.id);
+    if (!user) {
+      throw new BadRequestException('Такого пользователя не существует!');
+    }
+    const isUser = await this.isUserInRoom(roomId, user.email);
+
+    if (!isUser) {
+      throw new BadRequestException('Пользователь не находится в данной комнате!');
+    }
+
+    return await this.prisma.room.update({
+      where: { id: roomId },
+      data: {
+        users: {
+          disconnect: {
+            id: user.id,
+          },
+        },
+      },
+      include: {
+        users: true,
+        movies: true,
       },
     });
   }
