@@ -104,4 +104,14 @@ export class RoomService {
 
     return false;
   }
+
+  // ------------------------ { Удаление комнаты по id } ----------------------------
+
+  async deleteRoomById(roomId: number) {
+    return await this.prisma.room.delete({
+      where: {
+        id: roomId,
+      },
+    });
+  }
 }

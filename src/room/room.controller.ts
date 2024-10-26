@@ -24,6 +24,7 @@ import { JwtAccessGuard } from 'src/guards/jwt-access.guard';
 import { UserService } from 'src/user/user.service';
 import { AddUserToRoomDto } from './dto/add-user-to-room.dto';
 import { CreateRoomDto } from './dto/create-room.dto';
+import { DeleteRoomDto } from './dto/delete-room.dto';
 import { RoomService } from './room.service';
 
 @ApiTags('Комнаты')
@@ -120,5 +121,11 @@ export class RoomController {
 
   @HttpCode(204)
   @Delete()
-  async deleteRoomById(@Body() roomId: number) {}
+  async deleteRoomById(@Body() dto: DeleteRoomDto) {
+    const deletedRoom = await this.roomService.deleteRoomById(dto.roomId);
+    if (!deletedRoom) {
+      throw new BadRequestException('Комнаты с таким id не существует!');
+    }
+    return;
+  }
 }
