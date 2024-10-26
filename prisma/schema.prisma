@@ -42,7 +42,7 @@ model Movie {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   title  String
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int    @map("user_id")
   room   Room   @relation(fields: [roomId], references: [id])
   roomId Int    @map("room_id")
