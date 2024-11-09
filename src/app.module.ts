@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { MovieModule } from './movie/movie.module';
 import { PrismaModule } from './prisma/prisma.module';
-import { UserModule } from './user/user.module';
 import { RoomModule } from './room/room.module';
-import { MoviesModule } from './movies/movies.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -13,7 +13,7 @@ import { MoviesModule } from './movies/movies.module';
     UserModule,
     AuthModule,
     RoomModule,
-    MoviesModule,
+    MovieModule,
   ],
 })
 export class AppModule {}
