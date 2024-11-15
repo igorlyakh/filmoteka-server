@@ -1,7 +1,6 @@
-import { WebSocketGateway, SubscribeMessage, MessageBody } from '@nestjs/websockets';
-import { MovieService } from './movie.service';
+import { MessageBody, SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
 import { CreateMovieDto } from './dto/create-movie.dto';
-import { UpdateMovieDto } from './dto/update-movie.dto';
+import { MovieService } from './movie.service';
 
 @WebSocketGateway()
 export class MovieGateway {
@@ -20,11 +19,6 @@ export class MovieGateway {
   @SubscribeMessage('findOneMovie')
   findOne(@MessageBody() id: number) {
     return this.movieService.findOne(id);
-  }
-
-  @SubscribeMessage('updateMovie')
-  update(@MessageBody() updateMovieDto: UpdateMovieDto) {
-    return this.movieService.update(updateMovieDto.id, updateMovieDto);
   }
 
   @SubscribeMessage('removeMovie')
