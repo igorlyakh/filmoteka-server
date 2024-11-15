@@ -141,6 +141,8 @@ export class RoomService {
       throw new BadRequestException('Пользователь не находится в данной комнате!');
     }
 
+    this.roomGateway.kickUserFromRoom(String(user.id), roomId);
+
     return await this.prisma.room.update({
       where: { id: roomId },
       data: {
