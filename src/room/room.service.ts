@@ -4,12 +4,14 @@ import { UserService } from 'src/user/user.service';
 import { AddUserToRoomDto } from './dto/add-user-to-room.dto';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { KickUserDto } from './dto/kick-user.dto';
+import { RoomGateway } from './room.gateway';
 
 @Injectable()
 export class RoomService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly roomGateway: RoomGateway
   ) {}
 
   // ------------------------ { Создание комнаты } --------------------
@@ -66,10 +68,20 @@ export class RoomService {
         },
       },
       include: {
-        users: true,
+        users: {
+          select: {
+            id: true,
+            email: true,
+            name: true,
+            movie: true,
+            rooms: true,
+          },
+        },
         movies: true,
       },
     });
+    this.roomGateway.addNewRoom(user.id, updatedRoom);
+
     return updatedRoom;
   }
 
