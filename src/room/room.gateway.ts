@@ -32,7 +32,7 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
           secret: this.configService.getOrThrow('JWT_ACCESS_SECRET'),
         });
         console.log(`Connected user id: ${user.id}`);
-        client.join(user.id);
+        client.join(user.id.toString());
       } catch (error) {
         console.log('err');
       }
@@ -47,15 +47,14 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
           secret: this.configService.getOrThrow('JWT_ACCESS_SECRET'),
         });
         console.log(`Disconnected user id: ${user.id}`);
-        client.leave(user.id);
+        client.leave(user.id.toString());
       } catch (error) {
         console.log('err');
       }
     }
   }
 
-  addNewRoom(userId: number, room: Room) {
-    console.log('work');
-    return this.server.to(String(userId)).emit('addRoom', room);
+  addNewRoom(userId: string, room: Room) {
+    return this.server.to(userId).emit('addRoom', room);
   }
 }
