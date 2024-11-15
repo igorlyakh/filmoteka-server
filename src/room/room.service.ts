@@ -80,7 +80,7 @@ export class RoomService {
         movies: true,
       },
     });
-    this.roomGateway.addNewRoom(String(user.id), updatedRoom);
+    this.roomGateway.addUserToNewRoom(String(user.id), updatedRoom);
 
     return updatedRoom;
   }
