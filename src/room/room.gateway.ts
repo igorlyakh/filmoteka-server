@@ -25,7 +25,6 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   handleConnection(client: Socket) {
     const token = client.handshake.headers.authorization?.split(' ')[1];
-    client.send('Check');
     if (token) {
       try {
         const user = this.jwtService.verify(token, {
