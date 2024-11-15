@@ -55,6 +55,6 @@ export class RoomGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   addUserToNewRoom(userId: string, room: Room) {
-    return this.server.to(userId).emit('addRoom', room);
+    return this.server.to(userId).emit('addToRoom', room);
   }
 }
