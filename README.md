@@ -36,7 +36,7 @@
 
 1. Клонируйте репозиторий:
    ```bash
-   git clone https://github.com/ваш-репозиторий/filmoteka-server.git
+   git clone https://github.com/igorlyakh/filmoteka-server
    cd filmoteka-server
    ```
 2. Установите зависимости с помощью Yarn:
