@@ -12,6 +12,7 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiOperation,
+  ApiParam,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -41,6 +42,7 @@ export class MovieController {
     description: 'Отправлены не корректные данные для добавления фильма.',
   })
   @ApiBody({ type: CreateMovieDto, description: 'Модель для добавления фильма:' })
+  @ApiParam({ name: 'roomId', type: 'number', example: 23 })
   @ApiBearerAuth()
   @HttpCode(201)
   @Post()
@@ -54,6 +56,15 @@ export class MovieController {
 
   // ---------------------- [ Получение фильмов определенной комнаты ] ----------------------------
 
+  @ApiOperation({
+    description: 'Получение всех фильмов из комнаты',
+    summary: 'получение фильмов',
+  })
+  @ApiResponse({ status: 200, description: 'Список фильмов успешно получен.' })
+  @ApiResponse({ status: 401, description: 'Пользователь не авторизован.' })
+  @ApiResponse({ status: 403, description: 'У пользователя нет доступа.' })
+  @ApiParam({ name: 'roomId', type: 'number', example: 23 })
+  @ApiBearerAuth()
   @Get()
   async getRoomsMovie(@Param('roomId') roomId: number, @User() user: UserType) {
     return await this.movieService.getAllMovieByRoom(roomId, user);
@@ -61,6 +72,16 @@ export class MovieController {
 
   // ------------------------- [ Удаление фильма по id ] ---------------------------------
 
+  @ApiOperation({
+    description: 'Удаление фильма из комнаты по id',
+    summary: 'удаление фильма',
+  })
+  @ApiResponse({ status: 204, description: 'Фильм успешно удален.' })
+  @ApiResponse({ status: 401, description: 'Пользователь не авторизован.' })
+  @ApiResponse({ status: 403, description: 'У пользователя нет доступа.' })
+  @ApiBody({ type: DeleteMovieDto, description: 'Модель для удаления фильма:' })
+  @ApiParam({ name: 'roomId', type: 'number', example: 23 })
+  @ApiBearerAuth()
   @HttpCode(204)
   @Delete()
   async deleteMovie(

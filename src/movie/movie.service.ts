@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { RoomService } from 'src/room/room.service';
@@ -60,7 +60,7 @@ export class MovieService {
       throw new BadRequestException('Фильма с таким id не существует!');
     }
     if (!isUserInRoom) {
-      throw new BadRequestException('Нет доступа!');
+      throw new ForbiddenException('Нет доступа!');
     }
     if (!isMovieInRoom) {
       throw new BadRequestException('Такого фильма нет в комнате!');
