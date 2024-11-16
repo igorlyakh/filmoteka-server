@@ -39,7 +39,8 @@ export class MovieController {
   @ApiResponse({ status: 401, description: 'Пользователь не авторизован.' })
   @ApiResponse({
     status: 400,
-    description: 'Отправлены не корректные данные для добавления фильма.',
+    description:
+      'Отправлены не корректные данные для добавления фильма или фильм уже в списке.',
   })
   @ApiBody({ type: CreateMovieDto, description: 'Модель для добавления фильма:' })
   @ApiParam({ name: 'roomId', type: 'number', example: 23 })
