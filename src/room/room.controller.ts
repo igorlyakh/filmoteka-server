@@ -122,12 +122,8 @@ export class RoomController {
 
   @HttpCode(204)
   @Delete()
-  async deleteRoomById(@Body() dto: DeleteRoomDto) {
-    const deletedRoom = await this.roomService.deleteRoomById(dto.roomId);
-    if (!deletedRoom) {
-      throw new BadRequestException('Комнаты с таким id не существует!');
-    }
-    return;
+  async deleteRoomById(@Body() dto: DeleteRoomDto, @User() user: UserType) {
+    return await this.roomService.deleteRoomById(dto.roomId, user.email);
   }
 
   // --------------------------- { Удаление пользователя из комнаты } -----------------------------

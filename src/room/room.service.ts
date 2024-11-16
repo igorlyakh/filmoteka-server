@@ -120,7 +120,15 @@ export class RoomService {
 
   // ------------------------ { Удаление комнаты по id } ----------------------------
 
-  async deleteRoomById(roomId: number) {
+  async deleteRoomById(roomId: number, userEmail: string) {
+    const isRoom = await this.prisma.room.findFirst({ where: { id: roomId } });
+    const isUserInRoom = await this.isUserInRoom(roomId, userEmail);
+    if (!isUserInRoom) {
+      throw new BadRequestException('Вы не находитесь в этой комнате!');
+    }
+    if (!isRoom) {
+      throw new BadRequestException('Комнаты с таким id не существует!');
+    }
     return await this.prisma.room.delete({
       where: {
         id: roomId,
