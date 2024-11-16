@@ -14,7 +14,7 @@ export class MovieService {
   async createMovie(dto: CreateMovieDto, roomId: number, user: User) {
     const isUserInRoom = await this.roomService.isUserInRoom(roomId, user.email);
     if (!isUserInRoom) {
-      throw new BadRequestException('Нет доступа!');
+      throw new ForbiddenException('Нет доступа!');
     }
     const movieList = await this.prism.movie.create({
       data: {
@@ -29,7 +29,7 @@ export class MovieService {
   async getAllMovieByRoom(roomId: number, user: User) {
     const isUserInRoom = await this.roomService.isUserInRoom(roomId, user.email);
     if (!isUserInRoom) {
-      throw new BadRequestException('Нет доступа!');
+      throw new ForbiddenException('Нет доступа!');
     }
     const movies = await this.prism.movie.findMany({
       where: {
