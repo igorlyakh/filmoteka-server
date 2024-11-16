@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Post, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -17,6 +17,8 @@ import { MovieService } from './movie.service';
 @Controller(':roomId/movie')
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
+
+  // ------------------------ [ Добавление фильма в комнату ] -----------------
 
   @ApiOperation({
     description: 'Добавление фильма в комнату',
@@ -38,5 +40,12 @@ export class MovieController {
     @User() user: UserType
   ) {
     return await this.movieService.createMovie(dto, roomId, user);
+  }
+
+  // ---------------------- [ Получение фильмов определенной комнаты ] ----------------------------
+
+  @Get()
+  getRoomsMovie(@Param('roomId') roomId: number, @User() user: UserType) {
+    return this.movieService.getAllMovieByRoom(roomId, user);
   }
 }

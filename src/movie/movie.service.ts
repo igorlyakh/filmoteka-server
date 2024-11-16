@@ -12,7 +12,7 @@ export class MovieService {
   ) {}
 
   async createMovie(dto: CreateMovieDto, roomId: number, user: User) {
-    const isUserInRoom = this.roomService.isUserInRoom(roomId, user.email);
+    const isUserInRoom = await this.roomService.isUserInRoom(roomId, user.email);
     if (!isUserInRoom) {
       throw new BadRequestException('Нет доступа!');
     }
@@ -26,15 +26,16 @@ export class MovieService {
     return movieList;
   }
 
-  findAll() {
-    return `This action returns all movie`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} movie`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} movie`;
+  async getAllMovieByRoom(roomId: number, user: User) {
+    const isUserInRoom = await this.roomService.isUserInRoom(roomId, user.email);
+    if (!isUserInRoom) {
+      throw new BadRequestException('Нет доступа!');
+    }
+    const movies = await this.prism.movie.findMany({
+      where: {
+        roomId,
+      },
+    });
+    return movies;
   }
 }
