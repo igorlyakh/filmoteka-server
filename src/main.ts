@@ -37,7 +37,6 @@ async function start() {
   const config = new DocumentBuilder()
     .setTitle('Приложение Фильмотека.')
     .setDescription('Приложение для выбора фильма из совместных списков.')
-    .addTag('Filmoteka')
     .setVersion('1.0.0')
     .build();
 

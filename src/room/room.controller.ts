@@ -120,6 +120,18 @@ export class RoomController {
 
   // ---------------------------- { Удаление комнаты } --------------------------
 
+  @ApiOperation({
+    description: 'Удаление комнаты по id',
+    summary: 'удаление комнаты',
+  })
+  @ApiResponse({ status: 204, description: 'Комната успешно удалена.' })
+  @ApiResponse({ status: 401, description: 'Пользователь не авторизован.' })
+  @ApiResponse({
+    status: 400,
+    description: 'Неверно переданные данные.',
+  })
+  @ApiBody({ type: DeleteRoomDto, description: 'Модель для создание комнаты:' })
+  @ApiBearerAuth()
   @HttpCode(204)
   @Delete()
   async deleteRoomById(@Body() dto: DeleteRoomDto, @User() user: UserType) {
@@ -128,6 +140,24 @@ export class RoomController {
 
   // --------------------------- { Удаление пользователя из комнаты } -----------------------------
 
+  @ApiOperation({
+    description: 'Исключение пользователя из комнаты',
+    summary: 'исключение пользователя',
+  })
+  @ApiParam({
+    name: 'roomId',
+    description: 'id комнаты из которой будет исключен пользователь',
+    example: 3,
+    required: true,
+  })
+  @ApiResponse({ status: 200, description: 'Пользователь успешно исключен.' })
+  @ApiResponse({ status: 401, description: 'Пользователь не авторизован.' })
+  @ApiResponse({
+    status: 400,
+    description: 'Неверно переданные данные либо пользователя нет в данной комнате.',
+  })
+  @ApiBody({ type: KickUserDto, description: 'Модель для создание комнаты:' })
+  @ApiBearerAuth()
   @HttpCode(200)
   @Patch('/kick/:roomId')
   async kickUserFromRoom(
