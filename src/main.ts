@@ -35,7 +35,7 @@ async function start() {
 
   //* Настройка Swagger
   const config = new DocumentBuilder()
-    .setTitle('Приложение Фильмотека.')
+    .setTitle('Приложение Фильмотека')
     .setDescription('Приложение для выбора фильма из совместных списков.')
     .setVersion('1.0.0')
     .build();
