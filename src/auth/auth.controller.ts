@@ -6,6 +6,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { User as UserType } from '@prisma/client';
 import { Response as ResponseType } from 'express';
 import { User } from 'src/decorators/user.decorator';
 import { JwtAccessGuard } from 'src/guards/jwt-access.guard';
@@ -63,7 +64,10 @@ export class AuthController {
   @UseGuards(JwtRefreshGuard)
   @HttpCode(200)
   @Post('refresh')
-  async refreshTokens(@User() user, @Response({ passthrough: true }) res: ResponseType) {
+  async refreshTokens(
+    @User() user: UserType,
+    @Response({ passthrough: true }) res: ResponseType
+  ) {
     return this.authService.refreshTokens(user, res);
   }
 
