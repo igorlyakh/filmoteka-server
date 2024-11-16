@@ -110,19 +110,21 @@
 - **`yarn test:debug`** — Запуск тестов с отладчиком.
 - **`yarn test:e2e`** — Запуск энд-ту-энд тестов.
 
-## 🛠 Технологии
+## 🛠️ Технологии
 
-| Технология                                                                                        | Описание                                          |
-| ------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
-| ![NestJS](https://img.shields.io/badge/-NestJS-E0234E?logo=nestjs&logoColor=white)                | Фреймворк для серверной разработки на TypeScript. |
-| ![Prisma](https://img.shields.io/badge/-Prisma-2D3748?logo=prisma&logoColor=white)                | ORM для работы с PostgreSQL.                      |
-| ![Socket.IO](https://img.shields.io/badge/-Socket.IO-010101?logo=socketdotio&logoColor=white)     | Реалтайм взаимодействие через WebSocket.          |
-| ![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-336791?logo=postgresql&logoColor=white)    | Реляционная база данных.                          |
-| ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white)    | Основной язык разработки.                         |
-| ![JWT](https://img.shields.io/badge/-JWT-000000?logo=jsonwebtokens&logoColor=white)               | Механизм для генерации токенов авторизации.       |
-| ![Passport](https://img.shields.io/badge/-Passport-34E27A?logo=passport&logoColor=white)          | Middleware для аутентификации.                    |
-| ![Passport-JWT](https://img.shields.io/badge/-Passport--JWT-6E7783?logo=passport&logoColor=white) | Стратегия для работы с JWT токенами в Passport.   |
-| ![bcrypt](https://img.shields.io/badge/-bcrypt-003A70?logo=data:image/png;base64,...)             | Библиотека для хэширования паролей.               |
+| Технология                                                                                                   | Описание                                                      |
+| ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------- |
+| ![NestJS](https://img.shields.io/badge/NestJS-ff0000?logo=nestjs&logoColor=white)                            | Фреймворк для создания серверных приложений на TypeScript.    |
+| ![Prisma](https://img.shields.io/badge/Prisma-2D3748?logo=prisma&logoColor=white)                            | ORM для работы с базой данных PostgreSQL.                     |
+| ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?logo=postgresql&logoColor=white)                | Система управления базами данных.                             |
+| ![JWT](https://img.shields.io/badge/JWT-000000?logo=json-web-tokens&logoColor=white)                         | Стандарт для безопасной передачи данных.                      |
+| ![Passport](https://img.shields.io/badge/Passport-00485C?logo=passport&logoColor=white)                      | Модуль для аутентификации в Node.js.                          |
+| ![bcrypt](https://img.shields.io/badge/bcrypt-05122A?logo=bcrypt&logoColor=white)                            | Библиотека для хэширования паролей.                           |
+| ![Socket.IO](https://img.shields.io/badge/Socket.IO-010101?logo=socket.io&logoColor=white)                   | Библиотека для работы с WebSocket.                            |
+| ![Swagger](https://img.shields.io/badge/Swagger-85ea2d?logo=swagger&logoColor=white)                         | Инструмент для автоматической генерации документации API.     |
+| ![cookie-parser](https://img.shields.io/badge/cookie--parser-FFD700?logo=npm&logoColor=white)                | Модуль для работы с cookie в Express.                         |
+| ![class-validator](https://img.shields.io/badge/class--validator-1E90FF?logo=typescript&logoColor=white)     | Библиотека для валидации данных в TypeScript.                 |
+| ![class-transformer](https://img.shields.io/badge/class--transformer-8A2BE2?logo=typescript&logoColor=white) | Библиотека для трансформации объектов и классов в TypeScript. |
 
 ## 📝 Лицензия
 
