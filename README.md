@@ -1,73 +1,129 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# 🎥 Filmoteka Server
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+**Filmoteka Server** — это серверная часть приложения для управления коллекциями фильмов и комнатами. Позволяет пользователям создавать комнаты, добавлять фильмы, делиться коллекциями и выбирать случайный фильм из общего списка.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## 📋 Основные возможности
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- **Управление аутентификацией:**
 
-## Installation
+  - Регистрация и вход.
+  - Обновление токенов.
+  - Выход из системы.
 
-```bash
-$ yarn install
-```
+- **Управление комнатами:**
 
-## Running the app
+  - Создание комнат.
+  - Добавление и удаление участников.
+  - Просмотр комнат пользователя.
 
-```bash
-# development
-$ yarn run start
+- **Управление фильмами:**
 
-# watch mode
-$ yarn run start:dev
+  - Добавление и удаление фильмов в комнатах.
+  - Просмотр фильмов в конкретной комнате.
 
-# production mode
-$ yarn run start:prod
-```
+- **Реалтайм взаимодействие:**
 
-## Test
+  - Мгновенные обновления через WebSocket для добавления и удаления фильмов, а также участников комнаты.
 
-```bash
-# unit tests
-$ yarn run test
+- **Swagger-документация:**  
+  Эндпоинт для просмотра API документации — **`/api/docs`**.
 
-# e2e tests
-$ yarn run test:e2e
+---
 
-# test coverage
-$ yarn run test:cov
-```
+## 📦 Установка зависимостей
 
-## Support
+1. Клонируйте репозиторий:
+   ```bash
+   git clone https://github.com/ваш-репозиторий/filmoteka-server.git
+   cd filmoteka-server
+   ```
+2. Установите зависимости с помощью Yarn:
+   ```bash
+   yarn install
+   ```
+3. Настройте переменные окружения:  
+   В корне проекта найдите файл `.env.example`. Скопируйте его и переименуйте в `.env`. Затем укажите следующие переменные окружения:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+   - `DATABASE_URL` — Ссылка для подключения к базе данных PostgreSQL.
+   - `JWT_ACCESS_SECRET` — Секретный ключ для создания Access-токенов.
+   - `JWT_REFRESH_SECRET` — Секретный ключ для создания Refresh-токенов.
+   - `COOKIE_SECRET` — Секретный ключ для работы с cookie.
+   - `PORT` — Порт, на котором будет запущен сервер.
 
-## Stay in touch
+4. Запустите миграции для базы данных:
+   ```bash
+   yarn prisma migrate dev
+   ```
+5. Запустите сервер в режиме разработки:
+   ```bash
+   yarn dev
+   ```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## 📡 API Эндпоинты
 
-## License
+### 1. **Аутентификация**
 
-Nest is [MIT licensed](LICENSE).
+- **POST** `/api/auth/login` — Вход пользователя.
+- **POST** `/api/auth/registration` — Регистрация нового пользователя.
+- **POST** `/api/auth/refresh` — Обновление токенов.
+- **POST** `/api/auth/logout` — Выход пользователя.
+
+### 2. **Комнаты**
+
+- **POST** `/api/room` — Создание новой комнаты.
+- **GET** `/api/room` — Получение всех комнат пользователя.
+- **DELETE** `/api/room` — Удаление комнаты пользователя по ID.
+- **PATCH** `/api/room/:roomId` — Добавить участника в комнату.
+- **PATCH** `/api/room/kick/:roomId` — Удалить участника комнаты.
+
+### 3. **Фильмы**
+
+- **POST** `/api/:roomId/movie` — Добавить фильм в комнату.
+- **GET** `/api/:roomId/movie` — Получить фильмы комнаты.
+- **DELETE** `/api/:roomId/movie` — Удалить фильм из комнаты.
+
+### 4. **Swagger Документация**
+
+- **GET** `/api/docs` — Получение документации по API (Swagger).
+
+## ⚡ WebSocket События
+
+- **addMovie** — Добавление фильма в комнату.
+- **deleteMovie** — Удаление фильма из комнаты.
+- **addToRoom** — Добавление участника в комнату.
+- **kickFromRoom** — Удаление участника из комнаты.
+
+## 📝 Скрипты
+
+- **`yarn build`** — Сборка проекта.
+- **`yarn format`** — Форматирование файлов с использованием Prettier.
+- **`yarn start`** — Запуск проекта в продакшн-режиме.
+- **`yarn dev`** — Запуск проекта в режиме разработки.
+- **`yarn start:debug`** — Запуск проекта в режиме отладки.
+- **`yarn start:prod`** — Запуск проекта в продакшн-режиме (с использованием скомпилированных файлов).
+- **`yarn lint`** — Запуск линтинга с использованием ESLint.
+- **`yarn test`** — Запуск тестов.
+- **`yarn test:watch`** — Запуск тестов в режиме наблюдения.
+- **`yarn test:cov`** — Запуск тестов с покрытием.
+- **`yarn test:debug`** — Запуск тестов с отладчиком.
+- **`yarn test:e2e`** — Запуск энд-ту-энд тестов.
+
+## 🛠 Технологии
+
+| Технология                                                                                        | Описание                                          |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
+| ![NestJS](https://img.shields.io/badge/-NestJS-E0234E?logo=nestjs&logoColor=white)                | Фреймворк для серверной разработки на TypeScript. |
+| ![Prisma](https://img.shields.io/badge/-Prisma-2D3748?logo=prisma&logoColor=white)                | ORM для работы с PostgreSQL.                      |
+| ![Socket.IO](https://img.shields.io/badge/-Socket.IO-010101?logo=socketdotio&logoColor=white)     | Реалтайм взаимодействие через WebSocket.          |
+| ![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-336791?logo=postgresql&logoColor=white)    | Реляционная база данных.                          |
+| ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white)    | Основной язык разработки.                         |
+| ![JWT](https://img.shields.io/badge/-JWT-000000?logo=jsonwebtokens&logoColor=white)               | Механизм для генерации токенов авторизации.       |
+| ![Passport](https://img.shields.io/badge/-Passport-34E27A?logo=passport&logoColor=white)          | Middleware для аутентификации.                    |
+| ![Passport-JWT](https://img.shields.io/badge/-Passport--JWT-6E7783?logo=passport&logoColor=white) | Стратегия для работы с JWT токенами в Passport.   |
+| ![bcrypt](https://img.shields.io/badge/-bcrypt-003A70?logo=data:image/png;base64,...)             | Библиотека для хэширования паролей.               |
+
+## 📝 Лицензия
+
+Этот проект лицензирован под [MIT License](LICENSE).
