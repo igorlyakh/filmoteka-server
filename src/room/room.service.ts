@@ -25,7 +25,13 @@ export class RoomService {
         },
       },
       include: {
-        users: true,
+        users: {
+          select: {
+            id: true,
+            email: true,
+            name: true,
+          },
+        },
         movies: true,
       },
     });
@@ -45,7 +51,13 @@ export class RoomService {
         },
       },
       include: {
-        users: true,
+        users: {
+          select: {
+            id: true,
+            email: true,
+            name: true,
+          },
+        },
         movies: true,
       },
     });
@@ -73,8 +85,6 @@ export class RoomService {
             id: true,
             email: true,
             name: true,
-            movie: true,
-            rooms: true,
           },
         },
         movies: true,
@@ -91,7 +101,13 @@ export class RoomService {
     return this.prisma.room.findUnique({
       where: { id },
       include: {
-        users: true,
+        users: {
+          select: {
+            id: true,
+            email: true,
+            name: true,
+          },
+        },
         movies: true,
       },
     });
@@ -161,7 +177,13 @@ export class RoomService {
         },
       },
       include: {
-        users: true,
+        users: {
+          select: {
+            id: true,
+            email: true,
+            name: true,
+          },
+        },
         movies: true,
       },
     });
