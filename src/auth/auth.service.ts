@@ -42,7 +42,6 @@ export class AuthService {
     });
 
     return {
-      id: user.id,
       name: user.name,
       email: user.email,
       accessToken,
@@ -61,6 +60,8 @@ export class AuthService {
         signed: true,
       });
       return {
+        name: user.name,
+        email: user.email,
         accessToken,
       };
     }
