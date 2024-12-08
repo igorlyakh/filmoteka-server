@@ -2,7 +2,12 @@ import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Movie } from '@prisma/client';
 import { Server } from 'socket.io';
 
-@WebSocketGateway()
+@WebSocketGateway({
+  cors: {
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  },
+})
 export class MovieGateway {
   constructor() {}
 

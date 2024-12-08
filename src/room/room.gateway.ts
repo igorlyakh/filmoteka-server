@@ -4,7 +4,8 @@ import { Server } from 'socket.io';
 
 @WebSocketGateway({
   cors: {
-    origin: '*',
+    origin: process.env.CLIENT_URL,
+    credentials: true,
   },
 })
 export class RoomGateway {

@@ -17,7 +17,7 @@ async function start() {
 
   //* Включение cors
   app.enableCors({
-    origin: '*',
+    origin: process.env.CLIENT_URL,
     credentials: true,
   });
 
