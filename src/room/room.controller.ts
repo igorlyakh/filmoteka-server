@@ -70,12 +70,7 @@ export class RoomController {
   @Get()
   async getUserRooms(@User() user: UserType) {
     const rooms = await this.roomService.getUsersRoom(user.id);
-    if (rooms.length >= 1) {
-      return rooms;
-    }
-    return {
-      message: 'У пользователя ещё нет ни одной комнаты.',
-    };
+    return rooms;
   }
 
   // ----------------------------- { Добавление пользователя в комнату } -------------------------------
