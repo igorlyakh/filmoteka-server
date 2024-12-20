@@ -8,44 +8,39 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-
-  email    String  @unique
-  name     String
-  password String
-  rooms    Room[]  @relation("UserRooms")
-  movie    Movie[]
+  email     String   @unique
+  name      String
+  password  String
+  movie     Movie[]
+  rooms     Room[]   @relation("UserRooms")
 
   @@map("users")
 }
 
 model Room {
-  id Int @id @default(autoincrement())
-
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-
-  name   String
-  users  User[]  @relation("UserRooms")
-  movies Movie[]
+  name      String
+  movies    Movie[]
+  users     User[]   @relation("UserRooms")
 
   @@map("rooms")
 }
 
 model Movie {
-  id Int @id @default(autoincrement())
-
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-
-  title  String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId Int    @map("user_id")
-  room   Room   @relation(fields: [roomId], references: [id], onDelete: Cascade)
-  roomId Int    @map("room_id")
+  title     String
+  poster    String
+  userId    Int      @map("user_id")
+  roomId    Int      @map("room_id")
+  room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("movies")
 }

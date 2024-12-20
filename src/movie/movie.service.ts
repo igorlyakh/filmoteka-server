@@ -33,13 +33,13 @@ export class MovieService {
     if (filmInList) {
       throw new BadRequestException('Фильм уже находится в списке!');
     }
-    const info = await this.getImageByTitle(dto.title);
-    console.log({ info });
+    const { poster } = await this.getImageByTitle(dto.title);
     const movieList = await this.prism.movie.create({
       data: {
         title: dto.title,
         userId: user.id,
         roomId,
+        poster,
       },
     });
     this.movieGateWay.onAddMovie(users, movieList);
