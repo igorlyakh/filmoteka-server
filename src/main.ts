@@ -1,8 +1,10 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import 'colors';
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
+import logger from './helpers/logger';
 
 async function start() {
   //* Получение переменных из .env
@@ -43,6 +45,6 @@ async function start() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
 
-  await app.listen(PORT, () => console.log(`Сервер запущен на порту ${PORT}.`));
+  await app.listen(PORT, () => logger.info(`Сервер запущен на порту ${PORT}.`));
 }
 start();
