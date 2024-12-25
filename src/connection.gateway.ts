@@ -6,6 +6,7 @@ import {
   WebSocketGateway,
 } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
+import logger from './helpers/logger';
 
 @WebSocketGateway({
   cors: {
@@ -26,7 +27,7 @@ export class ConnectionGateway implements OnGatewayConnection, OnGatewayDisconne
         const user = this.jwtService.verify(token, {
           secret: this.configService.getOrThrow('JWT_ACCESS_SECRET'),
         });
-        console.log(`Connected user id: ${user.id}`);
+        logger.info(`Connected user id: ${user.id}`);
         client.join(user.id.toString());
       } catch (error) {
         console.log('err');
@@ -41,7 +42,7 @@ export class ConnectionGateway implements OnGatewayConnection, OnGatewayDisconne
         const user = this.jwtService.verify(token, {
           secret: this.configService.getOrThrow('JWT_ACCESS_SECRET'),
         });
-        console.log(`Disconnected user id: ${user.id}`);
+        logger.info(`Disconnected user id: ${user.id}`);
         client.leave(user.id.toString());
       } catch (error) {
         console.log('err');
