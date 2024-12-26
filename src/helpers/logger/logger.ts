@@ -1,45 +1,40 @@
+import * as fs from 'fs';
+import * as path from 'path';
 import * as winston from 'winston';
+
+const logDir = 'logs';
+if (!fs.existsSync(logDir)) {
+  fs.mkdirSync(logDir);
+}
+
+const customFormat = winston.format.printf(({ level, message, timestamp }) => {
+  const levelText = level === 'error' ? '[SERVER ERROR]'.red : '[SERVER LOG]'.green;
+  return `${levelText} - ${timestamp} - ${message}`;
+});
 
 const logger = winston.createLogger({
   level: 'info',
   format: winston.format.combine(
     winston.format.timestamp({
-      format: 'YYYY-MM-DD, HH:mm:ss',
+      format: 'DD-MM-YYYY, HH:mm:ss',
     }),
-    winston.format.printf(info => {
-      return `\n[SERVER LOG]  - ${info.timestamp}     ${info.message}`.magenta;
-    })
+    customFormat
   ),
-  transports: [new winston.transports.Console()],
+  transports: [
+    new winston.transports.Console({
+      format: winston.format.combine(
+        winston.format.colorize({ all: true }),
+        winston.format.timestamp({
+          format: 'DD-MM-YYYY, HH:mm:ss',
+        }),
+        customFormat
+      ),
+    }),
+    new winston.transports.File({
+      filename: path.join(logDir, 'app.log'),
+      level: 'info',
+    }),
+  ],
 });
-
-logger.add(
-  new winston.transports.Console({
-    level: 'error',
-    format: winston.format.combine(
-      winston.format.timestamp({
-        format: 'YYYY-MM-DD, HH:mm:ss',
-      }),
-      winston.format.printf(info => {
-        return `\n[SERVER ERROR] - ${info.timestamp}     ${info.message}`.red;
-      })
-    ),
-  })
-);
-
-logger.add(
-  new winston.transports.File({
-    filename: 'error.log',
-    level: 'error',
-    format: winston.format.combine(
-      winston.format.timestamp({
-        format: 'YYYY-MM-DD, HH:mm:ss',
-      }),
-      winston.format.printf(info => {
-        return `[SERVER ERROR] - ${info.timestamp}     ${info.message}`;
-      })
-    ),
-  })
-);
 
 export default logger;
