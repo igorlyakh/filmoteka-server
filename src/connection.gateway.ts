@@ -30,7 +30,9 @@ export class ConnectionGateway implements OnGatewayConnection, OnGatewayDisconne
         logger.info(`[SOCKET] Connected user id: ${user.id}`);
         client.join(user.id.toString());
       } catch (error) {
-        console.log('err');
+        logger.error(
+          '[SOCKET] Пользователь не авторизован или возникла ошибка при коннекте'
+        );
       }
     }
   }
@@ -45,7 +47,9 @@ export class ConnectionGateway implements OnGatewayConnection, OnGatewayDisconne
         logger.info(`[SOCKET] Disconnected user id: ${user.id}`);
         client.leave(user.id.toString());
       } catch (error) {
-        console.log('err');
+        logger.error(
+          '[SOCKET] Пользователь не авторизован или возникла ошибка при дисконнекте'
+        );
       }
     }
   }
