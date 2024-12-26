@@ -9,7 +9,7 @@ if (!fs.existsSync(logDir)) {
 
 const customFormat = winston.format.printf(({ level, message, timestamp }) => {
   const levelText = level === 'error' ? '[SERVER ERROR]'.red : '[SERVER LOG]'.green;
-  return `${levelText} - ${timestamp} - ${message}`;
+  return `${levelText}  - ${timestamp}     ${message}`;
 });
 
 const logger = winston.createLogger({
@@ -25,7 +25,7 @@ const logger = winston.createLogger({
       format: winston.format.combine(
         winston.format.colorize({ all: true }),
         winston.format.timestamp({
-          format: 'DD-MM-YYYY, HH:mm:ss',
+          format: 'DD.MM.YYYY, HH:mm:ss',
         }),
         customFormat
       ),
