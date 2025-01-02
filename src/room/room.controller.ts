@@ -184,7 +184,7 @@ export class RoomController {
   })
   @ApiBearerAuth()
   @HttpCode(200)
-  @Get('/users/:roomId')
+  @Get('/room/:roomId/users')
   async getUsersInRoom(@Param('roomId') roomId: number) {
     return this.roomService.findRoomById(roomId);
   }
