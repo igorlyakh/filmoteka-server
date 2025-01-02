@@ -164,4 +164,28 @@ export class RoomController {
       throw new BadRequestException('Невозможно исключить самого себя!');
     return this.roomService.kickUserFromRoom(roomId, dto);
   }
+
+  // --------------------------- { Получение всех пользователей комнаты } -----------------------------
+  @ApiOperation({
+    description: 'Получение всех пользователей комнаты',
+    summary: 'получение пользователей комнаты',
+  })
+  @ApiParam({
+    name: 'roomId',
+    description: 'id комнаты из которой будет получен список пользователей',
+    example: 3,
+    required: true,
+  })
+  @ApiResponse({ status: 200, description: 'Список пользователей успешно получен.' })
+  @ApiResponse({ status: 401, description: 'Пользователь не авторизован.' })
+  @ApiResponse({
+    status: 400,
+    description: 'Неверно переданные данные либо комнаты не существует.',
+  })
+  @ApiBearerAuth()
+  @HttpCode(200)
+  @Get('/users/:roomId')
+  async getUsersInRoom(@Param('roomId') roomId: number) {
+    return this.roomService.findRoomById(roomId);
+  }
 }
