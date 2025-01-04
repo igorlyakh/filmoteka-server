@@ -39,6 +39,7 @@ export class AuthService {
       httpOnly: true,
       secure: false,
       signed: true,
+      sameSite: 'strict',
     });
 
     return {
@@ -58,6 +59,7 @@ export class AuthService {
         httpOnly: true,
         secure: false,
         signed: true,
+        sameSite: 'strict',
       });
       return {
         name: user.name,
@@ -75,6 +77,7 @@ export class AuthService {
       httpOnly: true,
       secure: false,
       signed: true,
+      sameSite: 'strict',
     });
     return { accessToken };
   }
