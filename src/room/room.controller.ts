@@ -130,7 +130,7 @@ export class RoomController {
   @HttpCode(204)
   @Delete()
   async deleteRoomById(@Body() dto: DeleteRoomDto, @User() user: UserType) {
-    return await this.roomService.deleteRoomById(dto.roomId, user.email);
+    return await this.roomService.deleteRoomById(dto.roomId, user.email, user.id);
   }
 
   // --------------------------- { Удаление пользователя из комнаты } -----------------------------

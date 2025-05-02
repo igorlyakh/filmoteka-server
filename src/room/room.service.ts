@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserService } from 'src/user/user.service';
 import { AddUserToRoomDto } from './dto/add-user-to-room.dto';
@@ -144,7 +144,7 @@ export class RoomService {
 
   // ------------------------ { Удаление комнаты по id } ----------------------------
 
-  async deleteRoomById(roomId: number, userEmail: string) {
+  async deleteRoomById(roomId: number, userEmail: string, userId: number) {
     const isRoom = await this.prisma.room.findFirst({ where: { id: roomId } });
     const isUserInRoom = await this.isUserInRoom(roomId, userEmail);
     if (!isUserInRoom) {
@@ -152,6 +152,9 @@ export class RoomService {
     }
     if (!isRoom) {
       throw new BadRequestException('Комнаты с таким id не существует!');
+    }
+    if (isRoom.ownerId !== userId) {
+      throw new ForbiddenException('Вы не являетесь владельцем этой комнаты!');
     }
     return await this.prisma.room.delete({
       where: {
