@@ -8,14 +8,15 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  email     String   @unique
-  name      String
-  password  String
-  movie     Movie[]
-  rooms     Room[]   @relation("UserRooms")
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  email      String   @unique
+  name       String
+  password   String
+  movie      Movie[]
+  rooms      Room[]   @relation("UserRooms")
+  ownedRooms Room[]   
 
   @@map("users")
 }
@@ -27,6 +28,8 @@ model Room {
   name      String
   movies    Movie[]
   users     User[]   @relation("UserRooms")
+  ownerId   Int      @map("owner_id")
+  owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
   @@map("rooms")
 }
