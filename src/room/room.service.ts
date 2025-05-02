@@ -20,12 +20,20 @@ export class RoomService {
     const room = await this.prisma.room.create({
       data: {
         ...dto,
+        ownerId: id,
         users: {
           connect: { id },
         },
       },
       include: {
         users: {
+          select: {
+            id: true,
+            email: true,
+            name: true,
+          },
+        },
+        owner: {
           select: {
             id: true,
             email: true,
