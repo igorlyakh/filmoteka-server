@@ -84,11 +84,12 @@ export class AuthController {
   @HttpCode(204)
   @Post('logout')
   async logout(@Response({ passthrough: true }) res: ResponseType) {
-    res.cookie('refreshToken', '', {
+    res.cookie('refreshToken', 'null', {
       httpOnly: true,
       signed: true,
       secure: false,
       sameSite: 'strict',
+      maxAge: 30 * 24 * 60 * 60 * 1000,
     });
   }
 }

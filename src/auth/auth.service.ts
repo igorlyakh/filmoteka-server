@@ -40,6 +40,7 @@ export class AuthService {
       secure: false,
       signed: true,
       sameSite: 'strict',
+      maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
     return {
@@ -60,6 +61,7 @@ export class AuthService {
         secure: false,
         signed: true,
         sameSite: 'strict',
+        maxAge: 30 * 24 * 60 * 60 * 1000,
       });
       return {
         name: user.name,
@@ -78,6 +80,7 @@ export class AuthService {
       secure: false,
       signed: true,
       sameSite: 'strict',
+      maxAge: 30 * 24 * 60 * 60 * 1000,
     });
     return { accessToken };
   }
