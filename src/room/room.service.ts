@@ -100,7 +100,10 @@ export class RoomService {
     });
     this.roomGateway.addUserToNewRoom(String(user.id), updatedRoom);
 
-    return updatedRoom;
+    return {
+      id: user.id,
+      name: user.name,
+    };
   }
 
   // --------------------- { Поиск комнаты по id } ----------------------
