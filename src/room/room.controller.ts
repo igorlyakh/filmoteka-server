@@ -160,8 +160,6 @@ export class RoomController {
     @Body() dto: KickUserDto,
     @User() user: UserType
   ) {
-    if (dto.id === user.id)
-      throw new BadRequestException('Невозможно исключить самого себя!');
     return this.roomService.kickUserFromRoom(roomId, dto);
   }
 

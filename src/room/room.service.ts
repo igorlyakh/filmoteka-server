@@ -145,6 +145,23 @@ export class RoomService {
     return false;
   }
 
+  // ------------------------ { Пользователь владелец команты } ----------------------------
+
+  async isUserOwnerOfRoom(roomId: number, userId: number) {
+    const room = await this.prisma.room.findFirst({
+      where: {
+        id: roomId,
+        ownerId: userId,
+      },
+    });
+
+    if (room) {
+      return true;
+    }
+
+    return false;
+  }
+
   // ------------------------ { Удаление комнаты по id } ----------------------------
 
   async deleteRoomById(roomId: number, userEmail: string, userId: number) {
@@ -177,6 +194,12 @@ export class RoomService {
 
     if (!isUser) {
       throw new BadRequestException('Пользователь не находится в данной комнате!');
+    }
+
+    const isUserOwner = await this.isUserOwnerOfRoom(roomId, user.id);
+
+    if (isUserOwner) {
+      throw new ForbiddenException('Вы не можете удалить владельца комнаты!');
     }
 
     this.roomGateway.kickUserFromRoom(String(user.id), roomId);
