@@ -1,4 +1,9 @@
-import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserService } from 'src/user/user.service';
 import { AddUserToRoomDto } from './dto/add-user-to-room.dto';
@@ -109,6 +114,9 @@ export class RoomService {
   // --------------------- { Поиск комнаты по id } ----------------------
 
   async findRoomById(id: number) {
+    if (isNaN(id)) {
+      throw new NotFoundException('Ошибка в ID!');
+    }
     return this.prisma.room.findUnique({
       where: { id },
       include: {
@@ -127,6 +135,9 @@ export class RoomService {
   // ---------------------- { Проверка нахождение пользователя в комнате } --------------------------
 
   async isUserInRoom(roomId: number, email: string) {
+    if (isNaN(roomId)) {
+      throw new NotFoundException('Ошибка в ID!');
+    }
     const user = await this.prisma.room.findFirst({
       where: {
         id: roomId,
