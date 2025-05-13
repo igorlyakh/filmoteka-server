@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   HttpCode,
   Param,
@@ -94,10 +95,27 @@ export class RoomController {
   })
   @ApiBearerAuth()
   @Patch(':roomId')
-  async addUserToRoom(@Body() dto: AddUserToRoomDto, @Param('roomId') roomId: number) {
-    const user = await this.userService.findUserByEmail(dto.email);
+  async addUserToRoom(
+    @Body() dto: AddUserToRoomDto,
+    @Param('roomId') roomId: number,
+    @User() user: UserType
+  ) {
+    const invitedUser = await this.userService.findUserByEmail(dto.email);
+    const invitingUser = await this.userService.findUserById(user.id);
+    const isInvitingUserInRoom = await this.roomService.isUserInRoom(
+      roomId,
+      invitingUser.email
+    );
+    if (!isInvitingUserInRoom) {
+      throw new ForbiddenException(
+        'Вы не можете пригласить пользователя в комнату, если вы там не находитесь.'
+      );
+    }
+    if (invitedUser.email === invitingUser.email) {
+      throw new BadRequestException('Вы не можете пригласить себя в комнату.');
+    }
     const room = await this.roomService.findRoomById(roomId);
-    if (!user) {
+    if (!invitedUser) {
       throw new BadRequestException('Пользователя с таким email не существует.');
     }
 
@@ -105,7 +123,7 @@ export class RoomController {
       throw new BadRequestException('Такой комнаты не существует.');
     }
 
-    const checkUser = await this.roomService.isUserInRoom(roomId, user.email);
+    const checkUser = await this.roomService.isUserInRoom(roomId, invitedUser.email);
     if (checkUser) {
       throw new BadRequestException('Пользователь уже находится в данной комнате.');
     }
@@ -155,11 +173,7 @@ export class RoomController {
   @ApiBearerAuth()
   @HttpCode(200)
   @Patch('/kick/:roomId')
-  async kickUserFromRoom(
-    @Param('roomId') roomId: number,
-    @Body() dto: KickUserDto,
-    @User() user: UserType
-  ) {
+  async kickUserFromRoom(@Param('roomId') roomId: number, @Body() dto: KickUserDto) {
     return this.roomService.kickUserFromRoom(roomId, dto);
   }
 
