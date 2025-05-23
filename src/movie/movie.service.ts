@@ -108,7 +108,7 @@ export class MovieService {
       };
     } catch (error) {
       return {
-        poster: 'https://www.themoviedb.org/t/p/original/7rhzEufov6yV81d7Zwv8ZsFZl8J.jpg',
+        poster: 'https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg',
       };
     }
   }
