@@ -106,6 +106,9 @@ export class RoomController {
       roomId,
       invitingUser.email
     );
+    if (!invitedUser) {
+      throw new BadRequestException('Пользователя с таким email не существует.');
+    }
     if (!isInvitingUserInRoom) {
       throw new ForbiddenException(
         'Вы не можете пригласить пользователя в комнату, если вы там не находитесь.'
@@ -115,10 +118,6 @@ export class RoomController {
       throw new BadRequestException('Вы не можете пригласить себя в комнату.');
     }
     const room = await this.roomService.findRoomById(roomId);
-    if (!invitedUser) {
-      throw new BadRequestException('Пользователя с таким email не существует.');
-    }
-
     if (!room) {
       throw new BadRequestException('Такой комнаты не существует.');
     }
